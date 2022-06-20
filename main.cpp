@@ -3,11 +3,12 @@
 #include <cmath>
 #include <string>
 #include <cstdlib>
+#include <iomanip>
 
 #define BITMAPFILEHEADER_SIZE 14
 #define BITMAPINFOHEADER_SIZE 40
 
-using std::string, std::cout, std::cerr, std::exit;
+using std::cout, std::cerr, std::exit, std::setw;
 
 class Image {
 public:
@@ -66,13 +67,13 @@ private:
 		}
 		
 		pixels = new unsigned char[width * height];
-		int n = invert ? height - 1 : 0;
 		for (int i = 0; i < height; i++) {
 			for (int j = 0; j < width; j++) {
 				unsigned char pixel[3];
 				f.read(reinterpret_cast<char*>(pixel), 3);
 				const unsigned char grey_value = to_greyscale(pixel);
-				pixels[(n - i) * width + j] = grey_value;
+				int n = invert ? (height - 1 - i) : i;
+				pixels[n * width + j] = grey_value;
 			}
 			f.ignore(padding);
 		}
@@ -102,7 +103,7 @@ private:
 	}
 
 	void write() {
-		string ascii = "`^\",:;Il!i~+_-?][}{1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$";
+		std::string ascii = "`^\",:;Il!i~+_-?][}{1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$";
 		for (int i = 0; i < height; i++) {
 			for (int j = 0; j < width; j++) {
                 unsigned char pixel = pixels[i * width + j];
@@ -117,8 +118,8 @@ private:
 };
 
 int main(int argc, char *argv[]) {
-	if (argc == 1 || string(argv[1]) == "-help") {
-		cerr << "usage: ./main image_path [ansi_code]\n\timage_path: path to a 24-bit bitmap image\n\tansi_code: ansi code between 0 and 255\n"; 
+	if (argc == 1) {
+		cerr << "usage: ./main image_path [ansi_code]\n" << setw(49) << "image_path: path to a 24-bit bitmap image\n" << setw(46) << "ansi_code: ansi code between 0 and 255\n"; 
 		return 1;
 	}
 	else if (argc > 2) {

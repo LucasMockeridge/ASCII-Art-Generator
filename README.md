@@ -6,5 +6,5 @@ A C++ program that generates ASCII art from 24-bit bitmap images.
 
 ## Usage
 	usage: ./main image_path [ansi_code]
-		image_path: path to a 24-bit bitmap image
-		ansi_code: ansi code between 0 and 255
+		   image_path: path to a 24-bit bitmap image
+		   ansi_code: ansi code between 0 and 255
