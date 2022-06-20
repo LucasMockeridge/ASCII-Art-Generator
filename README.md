@@ -2,7 +2,7 @@
 A C++ program that generates ASCII art from 24-bit bitmap images.
 
 ## Compilation
-	gcc main.cpp -o main -lstdc++ -lm -Wall -std=c++17	
+    gcc main.cpp -o main -lstdc++ -lm -Wall -std=c++17	
 
 ## Usage
     usage: ./main image_path [ansi_code]

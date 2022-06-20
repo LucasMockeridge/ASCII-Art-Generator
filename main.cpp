@@ -8,7 +8,7 @@
 #define BITMAPFILEHEADER_SIZE 14
 #define BITMAPINFOHEADER_SIZE 40
 
-using std::cout, std::cerr, std::exit, std::setw;
+using std::ifstream, std::cerr, std::exit, std::string, std::cout, std::setw;
 
 class Image {
 public:
@@ -23,7 +23,7 @@ private:
 	unsigned char* pixels;
 
 	void read(const char* filepath) {
-		std::ifstream f;
+		ifstream f;
 		f.open(filepath, std::ios::binary);
 
 		if (!f.is_open()) {
@@ -39,7 +39,7 @@ private:
 		if (static_cast<char>(file_header[0]) != 'B' || static_cast<char>(file_header[1]) != 'M') {
 			cerr << "Invalid BMP!" << "\n";
 			exit(1);
-        }
+		}
 
 		f.read(reinterpret_cast<char*>(info_header), BITMAPINFOHEADER_SIZE);
 		
@@ -93,26 +93,26 @@ private:
 	}
 
 	unsigned char gamma(double value) {
-		if(value <= 0.0031308) {
-      		value *= 12.92;
+		if (value <= 0.0031308) {
+			value *= 12.92;
 		}
-    	else { 
-      		value = 1.055 * pow(value, 1.0 / 2.4) - 0.055;
+		else {
+			value = 1.055 * pow(value, 1.0 / 2.4) - 0.055;
 		}
-    	return static_cast<unsigned char>(value * 255 + 0.5);
+		return static_cast<unsigned char>(value * 255 + 0.5);
 	}
 
 	void write() {
-		std::string ascii = "`^\",:;Il!i~+_-?][}{1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$";
+		string ascii = "`^\",:;Il!i~+_-?][}{1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$";
 		for (int i = 0; i < height; i++) {
 			for (int j = 0; j < width; j++) {
-                unsigned char pixel = pixels[i * width + j];
+				unsigned char pixel = pixels[i * width + j];
 				for (int k = 0; k < 3; k++) {
 					cout << ascii[static_cast<int>(pixel / 255.0 * (ascii.length() - 1))];
 				}
-            }
+			}
 			cout << "\n";
-        }
+		}
 		delete [] pixels;
 	}
 };
